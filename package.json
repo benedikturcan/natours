@@ -1,0 +1,22 @@
+{
+  "name": "natours",
+  "version": "1.0.0",
+  "description": "learning node, express and mongoFB",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benedikturcan/natours.git"
+  },
+  "author": "benedikt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benedikturcan/natours/issues"
+  },
+  "homepage": "https://github.com/benedikturcan/natours#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
