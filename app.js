@@ -40,6 +40,7 @@ const getAllTours = (req, res) => {
 
 // 3) ROUTES
 
+// Tours Endpoints
 const getATour = (req, res) => {
   console.log(req.params);
 
@@ -112,12 +113,50 @@ const deleteATour = (req, res) => {
   });
 };
 
+const getAllUsers = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: '500',
+    message: 'This route is not yet defined',
+  });
+};
+
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const updateUser = (res, req) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: '500',
+    message: 'This route is not yet defined',
+  });
+};
+
 app.route('/api/v1/tours').get(getAllTours).post(createATour);
 app
   .route('/api/v1/tours/:id')
   .get(getATour)
   .patch(updateATour)
   .delete(deleteATour);
+
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
+app.route('api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 // 4) START SERVER
 
