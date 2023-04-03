@@ -2,15 +2,24 @@ const Tour = require('../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
+    console.log(req.query);
     // Building the query
+    // Filtering
     const queryObj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
 
     // Checking if excludedFields is working
-    console.log(req.query, queryObj);
+    // console.log(req.query, queryObj);
 
-    const query = Tour.find(queryObj);
+    // Advanced filtering
+    // This allows you to use so called greater than and or less than query as a call
+    let queryStr = JSON.stringify(queryObj);
+    // the 'g' in the regular expression stands for, that multiple machts will be found
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    console.log(JSON.parse(queryStr));
+
+    const query = Tour.find(JSON.parse(queryStr));
 
     // Executing the query
     const tours = await query;
