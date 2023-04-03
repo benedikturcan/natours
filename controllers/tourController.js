@@ -3,8 +3,7 @@ const Tour = require('../models/tourModel');
 exports.getAllTours = async (req, res) => {
   try {
     console.log(req.query);
-    // Building the query
-    // Filtering
+    // BUILDING
     const queryObj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
@@ -12,16 +11,44 @@ exports.getAllTours = async (req, res) => {
     // Checking if excludedFields is working
     // console.log(req.query, queryObj);
 
-    // Advanced filtering
+    // ADVANCED FILTERING
     // This allows you to use so called greater than and or less than query as a call
     let queryStr = JSON.stringify(queryObj);
     // the 'g' in the regular expression stands for, that multiple machts will be found
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
     console.log(JSON.parse(queryStr));
 
-    const query = Tour.find(JSON.parse(queryStr));
+    let query = Tour.find(JSON.parse(queryStr));
 
-    // Executing the query
+    // SORTING
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort('-createdAt');
+    }
+
+    // FIELD LIMITING
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v');
+    }
+
+    // PAGINATION
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTours = await Tour.countDocument();
+      if (skip >= numTours) throw new Error('This page does not exist');
+    }
+
+    // EXECUTING
     const tours = await query;
 
     // Sending the response
